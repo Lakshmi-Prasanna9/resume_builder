@@ -662,7 +662,7 @@ async function enhanceWithAI(field) {
     btn.classList.add('loading');
 
     try {
-        const response = await fetch('/api/enhance', {
+        const response = await fetch('/api/enhance.js', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

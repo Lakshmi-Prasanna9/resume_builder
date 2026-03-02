@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickResume AI - Professional Resume Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="#6366f1"/>
+                        <path d="M8 10h16M8 16h12M8 22h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h1>QuickResume AI</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="themeToggle" class="btn-icon" title="Toggle Dark Mode">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </button>
+                    <button id="clearForm" class="btn-secondary">Clear Form</button>
+                    <button id="downloadPDF" class="btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Form Section -->
+            <section class="form-section">
+                <div class="form-container">
+                    <!-- Template Selection -->
+                    <div class="form-group template-selector">
+                        <label>Choose Template</label>
+                        <div class="template-options">
+                            <label class="template-option active" data-template="modern">
+                                <input type="radio" name="template" value="modern" checked>
+                                <div class="template-preview modern-preview">
+                                    <div class="preview-header"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-line"></div>
+                                        <div class="preview-line short"></div>
+                                    </div>
+                                </div>
+                                <span>Modern</span>
+                            </label>
+                            <label class="template-option" data-template="minimal">
+                                <input type="radio" name="template" value="minimal">
+                                <div class="template-preview minimal-preview">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                                <span>Minimal</span>
+                            </label>
+                            <label class="template-option" data-template="professional">
+                                <input type="radio" name="template" value="professional">
+                                <div class="template-preview professional-preview">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-main">
+                                        <div class="preview-line"></div>
+                                        <div class="preview-line short"></div>
+                                    </div>
+                                </div>
+                                <span>Professional</span>
+                            </label>
+                            <label class="template-option" data-template="creative">
+                                <input type="radio" name="template" value="creative">
+                                <div class="template-preview creative-preview">
+                                    <div class="preview-accent"></div>
+                                    <div class="preview-content">
+                                        <div class="preview-line"></div>
+                                        <div class="preview-line short"></div>
+                                    </div>
+                                </div>
+                                <span>Creative</span>
+                            </label>
+                            <label class="template-option" data-template="executive">
+                                <input type="radio" name="template" value="executive">
+                                <div class="template-preview executive-preview">
+                                    <div class="preview-line thick"></div>
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                                <span>Executive</span>
+                            </label>
+                            <label class="template-option" data-template="tech">
+                                <input type="radio" name="template" value="tech">
+                                <div class="template-preview tech-preview">
+                                    <div class="preview-code"></div>
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line short"></div>
+                                </div>
+                                <span>Tech</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="form-section-group">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" placeholder="John Doe" required>
+                                <span class="error-message" id="fullNameError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Professional Title</label>
+                                <input type="text" id="title" placeholder="Software Engineer">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" placeholder="john@example.com" required>
+                                <span class="error-message" id="emailError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn</label>
+                                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe">
+                            </div>
+                            <div class="form-group">
+                                <label for="github">GitHub</label>
+                                <input type="url" id="github" placeholder="https://github.com/johndoe">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Career Summary -->
+                    <div class="form-section-group">
+                        <div class="section-header">
+                            <h3>Career Summary</h3>
+                            <button type="button" class="btn-ai" data-field="summary" title="Improve with AI">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                                Improve with AI
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="summary" rows="4" placeholder="Write a brief summary about yourself and your career goals..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="form-section-group">
+                        <h3>Skills</h3>
+                        <div class="form-group">
+                            <label for="skills">Skills (comma separated)</label>
+                            <textarea id="skills" rows="3" placeholder="JavaScript, React, Node.js, Python, SQL, Git..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="form-section-group">
+                        <div class="section-header">
+                            <h3>Work Experience</h3>
+                            <button type="button" class="btn-ai" data-field="experience" title="Improve with AI">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                                Improve with AI
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="experience" rows="6" placeholder="Job Title - Company Name (Start Date - End Date)&#10;&#10;• Describe your responsibilities and achievements&#10;• Use bullet points for better readability&#10;• Quantify results when possible (e.g., Increased sales by 25%)"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="form-section-group">
+                        <h3>Education</h3>
+                        <div class="form-group">
+                            <textarea id="education" rows="4" placeholder="Degree - Institution Name (Graduation Year)&#10;&#10;• Major/Field of Study&#10;• GPA (if notable)&#10;• Relevant coursework or achievements"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Projects -->
+                    <div class="form-section-group">
+                        <div class="section-header">
+                            <h3>Projects</h3>
+                            <button type="button" class="btn-ai" data-field="projects" title="Improve with AI">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                                Improve with AI
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="projects" rows="4" placeholder="Project Name&#10;&#10;• Brief description of the project&#10;• Technologies used&#10;• Your role and contributions"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="form-section-group">
+                        <h3>Certifications</h3>
+                        <div class="form-group">
+                            <textarea id="certifications" rows="3" placeholder="Certification Name - Issuing Organization (Year)&#10;Certification Name - Issuing Organization (Year)"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="form-section-group">
+                        <h3>Achievements</h3>
+                        <div class="form-group">
+                            <textarea id="achievements" rows="3" placeholder="• Achievement or Award Name (Year)&#10;• Recognition or Honor received&#10;• Notable accomplishment"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preview Section -->
+            <section class="preview-section">
+                <div class="preview-container">
+                    <div class="preview-header-bar">
+                        <span class="preview-label">Live Preview</span>
+                        <div class="preview-actions">
+                            <button id="zoomOut" class="btn-icon" title="Zoom Out">-</button>
+                            <span id="zoomLevel">100%</span>
+                            <button id="zoomIn" class="btn-icon" title="Zoom In">+</button>
+                        </div>
+                    </div>
+                    <div class="preview-wrapper" id="previewWrapper">
+                        <div id="resumePreview" class="resume-preview modern-template">
+                            <!-- Resume content will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- AI Enhancement Modal -->
+    <div id="aiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>AI Enhancement</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="comparison">
+                    <div class="comparison-section">
+                        <label>Original</label>
+                        <div id="originalText" class="text-box"></div>
+                    </div>
+                    <div class="comparison-arrow">→</div>
+                    <div class="comparison-section">
+                        <label>Enhanced</label>
+                        <div id="enhancedText" class="text-box enhanced"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="rejectEnhancement" class="btn-secondary">Keep Original</button>
+                <button id="acceptEnhancement" class="btn-primary">Use Enhanced</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
